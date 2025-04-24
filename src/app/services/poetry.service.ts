@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { SearchByType } from '../types/search-by.type';
 import { httpResource } from '@angular/common/http';
 import { Poem } from '../types/poem.type';
@@ -18,6 +18,7 @@ export class PoetryService {
   });
 
   poems = this.poetryResource.value.asReadonly();
+  totalPoems = computed(() => this.poems().length);
   isLoading = this.poetryResource.isLoading;
   error = this.poetryResource.error;
   

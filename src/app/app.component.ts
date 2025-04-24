@@ -38,6 +38,7 @@ export class AppComponent {
   serchCriteria = model('');
 
   poems = this.poetryService.poems;
+  totalPoems = this.poetryService.totalPoems;
   isLoading = this.poetryService.isLoading;
   error = this.poetryService.error;
 
