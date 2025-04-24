@@ -1,0 +1,27 @@
+<mat-card appearance="outlined">
+
+    <mat-card-header>
+        <mat-card-title>{{poem().title}}</mat-card-title>
+        <mat-card-subtitle>{{poem().author}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <!-- @let lines = poem().lines.slice(0, 5); -->
+        @let lines = showAllPoem() ? poem().lines : poem().lines.slice(0, 5);
+        @for (line of lines; track $index) {
+            <div>{{line}}</div>
+        }
+        <div>
+            <mat-slide-toggle [(ngModel)]="showAllPoem" class="mt-4">Show all</mat-slide-toggle>
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-fab extended (click)="read()">
+            <mat-icon>volume_up</mat-icon>
+            Read
+        </button>
+        <button mat-button (click)="cancel()">Cancel</button>
+    </mat-card-actions>
+
+</mat-card>

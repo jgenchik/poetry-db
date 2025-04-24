@@ -1,0 +1,9 @@
+@reference "tailwindcss";
+
+// :host {
+//     @apply min-w-lg;
+// }
+
+.mat-mdc-card-content {
+    @apply mt-4 mb-4
+}

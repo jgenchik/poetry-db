@@ -1,0 +1,14 @@
+@reference "tailwindcss";
+
+// :host {
+//     @apply bg-green-500
+// }
+
+div.content {
+    @apply container mx-auto
+}
+
+.poem-cards {
+    @apply flex flex-wrap flex-col gap-y-2
+    // @apply mt-4
+}
