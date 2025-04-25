@@ -1,20 +1,27 @@
 <mat-toolbar>
 
-  <div class="container mx-auto ">
-    Poetry DB
+  <div class="container mx-auto flex align-center">
+    <div>Poetry DB</div>
+
+    <div class="mx-auto"></div>
+    <button mat-icon-button (click)="openInfoDialog()">
+      <mat-icon>question_mark</mat-icon>
+    </button>
   </div>
+
+  <!-- <div class="mx-auto"></div>
+  <button mat-icon-button (click)="openInfoDialog()">
+    <mat-icon>question_mark</mat-icon>
+  </button> -->
   
-
 </mat-toolbar>
-
-
 
 
 <div class="content bg-red-50">
 
   <div class="flex flex-row">
     <div class="flex flex-col">
-      <label>Search by</label>
+      <label class="ml-2 text-lg">Search poems by</label>
       <mat-radio-group [(ngModel)]="searchBy">
         <mat-radio-button value="title">Title</mat-radio-button>
         <mat-radio-button value="author">Author</mat-radio-button>
@@ -36,6 +43,13 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   }
 
+  @if (totalPoems() > 0) {
+    <div class="flex mb-2">
+      <div class="mx-auto"></div>
+      <div class="text-red-900 font-semibold mr-4">Found: {{totalPoems() | number}}</div>
+    </div>
+  }
+
   <div class="poem-cards">
     @for (poem of poems(); track $index) {
       <app-poem-card-short [poem]="poem" />
@@ -46,7 +60,7 @@
 
 <!-- <router-outlet></router-outlet> -->
 
-<div>error: {{error() | json}}</div>
+<!-- <div>error: {{error() | json}}</div> -->
 
 <!-- <div>
   searchBy: {{searchBy()}}

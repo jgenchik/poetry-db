@@ -1,8 +1,23 @@
+@use '@angular/material' as mat;
 @reference "tailwindcss";
 
 // :host {
 //     @apply bg-green-500
 // }
+
+.mat-toolbar {
+    @include mat.toolbar-overrides((
+      container-background-color: rgb(139, 6, 6),
+      container-text-color: white,
+      title-text-weight: 500,
+    ));
+}
+
+.mat-icon {
+    @include mat.icon-overrides((
+        color: white
+    ));
+}
 
 div.content {
     @apply container mx-auto

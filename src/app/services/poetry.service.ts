@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { SearchByType } from '../types/search-by.type';
 import { httpResource } from '@angular/common/http';
 import { Poem } from '../types/poem.type';
@@ -9,10 +9,17 @@ import { Poem } from '../types/poem.type';
 export class PoetryService {
 
   private searchBy = signal<SearchByType>('title');
+  #searchBy: SearchByType = 'title';
   private serchCriteria = signal('');
 
+
+  // private poetryResource = httpResource<Poem[]>(() => ({
+  //   url: `https://poetrydb.org/${this.searchBy()}/${this.serchCriteria()}`
+  // }),{
+  //   defaultValue: []
+  // });
   private poetryResource = httpResource<Poem[]>(() => ({
-    url: `https://poetrydb.org/${this.searchBy()}/${this.serchCriteria()}`
+    url: `https://poetrydb.org/${this.#searchBy}/${this.serchCriteria()}`
   }),{
     defaultValue: []
   });
@@ -23,7 +30,9 @@ export class PoetryService {
   error = this.poetryResource.error;
   
 
-  constructor() { }
+  constructor() {
+    effect(() => this.#searchBy = this.searchBy());
+  }
 
   setSearchBy(searchBy: SearchByType) {
     this.searchBy.set(searchBy);
@@ -32,6 +41,5 @@ export class PoetryService {
   setSerchCriteria(serchCriteria: string) {
     this.serchCriteria.set(serchCriteria);
   }
-
 
 }
