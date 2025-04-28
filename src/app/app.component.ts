@@ -1,4 +1,4 @@
-import { Component, effect, inject, model } from '@angular/core';
+import { Component, effect, inject, model, OnInit } from '@angular/core';
 // import { RouterOutlet } from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {FormsModule} from '@angular/forms';
@@ -15,6 +15,7 @@ import { PoemCardShortComponent } from "./poem-card-short/poem-card-short.compon
 import { MatButtonModule } from '@angular/material/button';
 import { PromptUpdateService } from './services/prompt-update.service';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+import { Poem } from './types/poem.type';
 
 @Component({
   selector: 'app-root',
@@ -34,12 +35,14 @@ import { InfoDialogComponent } from './info-dialog/info-dialog.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   // https://github.com/thundercomb/poetrydb?tab=readme-ov-file#readme
 
   private readonly poetryService = inject(PoetryService);
   private readonly promptUpdateService = inject(PromptUpdateService);
   private readonly dialog = inject(MatDialog);
+
+  utterance = new SpeechSynthesisUtterance();
   
   searchBy = model<SearchByType>('title');
   serchCriteria = model('');
@@ -58,6 +61,13 @@ export class AppComponent {
     effect(() => this.poetryService.setSerchCriteria(this.serchCriteria()));
   }
 
+  ngOnInit(): void {
+    this.utterance.addEventListener('end', (event) => {
+      // console.log('Utterence ended. Event: ', event);
+      this.poetryService.setPlayingTitle('');
+    });
+  }
+
   clearSearchCriteria() {
     this.serchCriteria.set('');
   }
@@ -66,6 +76,25 @@ export class AppComponent {
     this.dialog.open(InfoDialogComponent, {
       width: '600px',
     });
+  }
+
+
+  playPoem(poem: Poem) {
+    this.poetryService.setPlayingTitle(poem.title);
+    const text = this.cleanupText(poem.lines.join(';'));
+    this.utterance.text = text;
+    speechSynthesis.speak(this.utterance);
+  }
+
+  cancelPlay() {
+    speechSynthesis.cancel();
+    this.poetryService.setPlayingTitle('');
+  }
+
+
+  private cleanupText(text: string) {
+    let clean = text.replaceAll('-', '').replaceAll('_', '');
+    return clean;
   }
 
 }

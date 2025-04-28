@@ -11,7 +11,6 @@
     </mat-card-header>
 
     <mat-card-content>
-        <!-- @let lines = poem().lines.slice(0, 5); -->
         @let lines = showAllPoem() ? poem().lines : poem().lines.slice(0, 5);
         @for (line of lines; track $index) {
             <div>{{line}}</div>
@@ -23,18 +22,14 @@
 
     <mat-card-actions>
         <button mat-fab extended (click)="read()" [disabled]="playingTitle().length > 0">
-            <mat-icon>volume_up</mat-icon>
+            @if (poemTooLong()) {
+                <mat-icon>warning</mat-icon>
+            }@else {
+                <mat-icon>volume_up</mat-icon>
+            }
             Play
         </button>
         <button mat-button (click)="cancel()" class="ml-2">Cancel</button>
     </mat-card-actions>
 
 </mat-card>
-
-<!-- <div>linecount: {{poem().linecount}}</div> -->
-
-<!-- <div>{{playingTitle()}}</div> -->
-
-<!-- @if (poemTooLong()) {
-    <div>*** TOO LONG</div>
-} -->
