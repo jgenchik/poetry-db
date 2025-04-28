@@ -48,6 +48,7 @@ export class PoemCardShortComponent implements OnInit {
     speechSynthesis.speak(this.utterance);
 
     // console.log(' ***', this.poem().title, ' text length: ', this.poemText().length);
+    // console.log('this.utterance', this.utterance);
   }
 
   cancel() {
