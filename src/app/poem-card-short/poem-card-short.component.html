@@ -1,7 +1,12 @@
 <mat-card appearance="outlined">
 
     <mat-card-header>
-        <mat-card-title>{{poem().title}}</mat-card-title>
+        <mat-card-title>
+            {{poem().title}}
+            @if (poem().title == playingTitle()) {
+                <mat-icon class="playing">volume_up</mat-icon>
+            }
+        </mat-card-title>
         <mat-card-subtitle>{{poem().author}}</mat-card-subtitle>
     </mat-card-header>
 
@@ -12,16 +17,24 @@
             <div>{{line}}</div>
         }
         <div>
-            <mat-slide-toggle [(ngModel)]="showAllPoem" class="mt-4">Show all</mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="showAllPoem" class="mt-4">Show all ({{poem().linecount | number}} lines)</mat-slide-toggle>
         </div>
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-fab extended (click)="read()">
+        <button mat-fab extended (click)="read()" [disabled]="playingTitle().length > 0">
             <mat-icon>volume_up</mat-icon>
             Play
         </button>
-        <button mat-button (click)="cancel()">Cancel</button>
+        <button mat-button (click)="cancel()" class="ml-2">Cancel</button>
     </mat-card-actions>
 
 </mat-card>
+
+<!-- <div>linecount: {{poem().linecount}}</div> -->
+
+<!-- <div>{{playingTitle()}}</div> -->
+
+<!-- @if (poemTooLong()) {
+    <div>*** TOO LONG</div>
+} -->

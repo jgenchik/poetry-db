@@ -48,6 +48,7 @@ export class AppComponent {
   totalPoems = this.poetryService.totalPoems;
   isLoading = this.poetryService.isLoading;
   error = this.poetryService.error;
+  playingTitle = this.poetryService.playingTitle;
 
   constructor() {
     effect(() => {

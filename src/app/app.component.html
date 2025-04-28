@@ -52,7 +52,7 @@
 
   <div class="poem-cards">
     @for (poem of poems(); track $index) {
-      <app-poem-card-short [poem]="poem" />
+      <app-poem-card-short [poem]="poem" [playingTitle]="playingTitle()" />
     }
   </div>
 

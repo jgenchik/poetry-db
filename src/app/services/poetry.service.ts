@@ -11,6 +11,8 @@ export class PoetryService {
   private searchBy = signal<SearchByType>('title');
   #searchBy: SearchByType = 'title';
   private serchCriteria = signal('');
+  #playingTitle = signal('');
+  playingTitle = this.#playingTitle.asReadonly();
 
 
   // private poetryResource = httpResource<Poem[]>(() => ({
@@ -40,6 +42,10 @@ export class PoetryService {
 
   setSerchCriteria(serchCriteria: string) {
     this.serchCriteria.set(serchCriteria);
+  }
+
+  setPlayingTitle(title: string) {
+    this.#playingTitle.set(title);
   }
 
 }
