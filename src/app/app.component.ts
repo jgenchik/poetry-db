@@ -1,4 +1,4 @@
-import { Component, effect, inject, model, OnInit } from '@angular/core';
+import { Component, effect, ElementRef, inject, model, OnInit, viewChild } from '@angular/core';
 // import { RouterOutlet } from '@angular/router';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {FormsModule} from '@angular/forms';
@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PromptUpdateService } from './services/prompt-update.service';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
 import { Poem } from './types/poem.type';
+import { UsageStatsService } from './services/usage-stats.service';
 
 @Component({
   selector: 'app-root',
@@ -41,11 +42,13 @@ export class AppComponent implements OnInit {
   private readonly poetryService = inject(PoetryService);
   private readonly promptUpdateService = inject(PromptUpdateService);
   private readonly dialog = inject(MatDialog);
+  private usageStatsService = inject(UsageStatsService);
 
   utterance = new SpeechSynthesisUtterance();
   
   searchBy = model<SearchByType>('title');
   serchCriteria = model('');
+  serchCriteriaEl = viewChild.required<ElementRef<HTMLInputElement>>('serchCriteriaEl');
 
   poems = this.poetryService.poems;
   totalPoems = this.poetryService.totalPoems;
@@ -57,6 +60,7 @@ export class AppComponent implements OnInit {
     effect(() => {
       this.serchCriteria.set('');
       this.poetryService.setSearchBy(this.searchBy());
+      this.serchCriteriaEl().nativeElement.focus();
     });
     effect(() => this.poetryService.setSerchCriteria(this.serchCriteria()));
   }
@@ -66,6 +70,8 @@ export class AppComponent implements OnInit {
       // console.log('Utterence ended. Event: ', event);
       this.poetryService.setPlayingTitle('');
     });
+
+    this.usageStatsService.addUsageStatistic('Opened app');
   }
 
   clearSearchCriteria() {
@@ -73,6 +79,7 @@ export class AppComponent implements OnInit {
   }
 
   openInfoDialog(): void {
+    this.usageStatsService.addUsageStatistic('Opened info dialog');
     this.dialog.open(InfoDialogComponent, {
       width: '600px',
     });
@@ -80,6 +87,8 @@ export class AppComponent implements OnInit {
 
 
   playPoem(poem: Poem) {
+    this.usageStatsService.addUsageStatistic(`Play ${poem.title}`);
+
     this.poetryService.setPlayingTitle(poem.title);
     const text = this.cleanupText(poem.lines.join(';'));
     this.utterance.text = text;

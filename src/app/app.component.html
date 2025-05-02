@@ -36,7 +36,7 @@
 
   <mat-form-field class="mt-4 w-full" appearance="fill">
     <mat-label>Serch Criteria</mat-label>
-    <input matInput [(ngModel)]="serchCriteria">
+    <input matInput [(ngModel)]="serchCriteria" #serchCriteriaEl>
   </mat-form-field>
 
   @if (isLoading()) {
